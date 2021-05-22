@@ -1,6 +1,18 @@
 var captcha_done = false;
+var captcha_label = document.currentScript.getAttribute('label');
 
-document.write('<p>Captcha<br><iframe id="doom_captcha" src="captcha.html?v=' + document.currentScript.getAttribute('version') + '&music=' + document.currentScript.getAttribute('music') + '" style="width:300px;height:150px;border:2px black solid;"></iframe></p>');
+var captcha_html = '';
+if( captcha_label ){
+    captcha_html = '<p>' + captcha_label + '<br>';
+}
+
+captcha_html += '<iframe id="doom_captcha" src="captcha.html?v=' + document.currentScript.getAttribute('version') + '&sound=' + document.currentScript.getAttribute('sound') + '" style="width:300px;height:150px;border:2px black solid;"></iframe>';
+
+if( captcha_label ){
+    captcha_html += '</p>';
+}
+
+document.write(captcha_html);
 
 
 window.addEventListener('message', function(e){

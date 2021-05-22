@@ -109,8 +109,9 @@ var enemy_width = 70;
 var enemy_height = 70;
 var total_kills = 0;
 var max_kills = 3;
-var music_on = document.location.href.indexOf('music=on') > -1;
+var sound_on = document.location.href.indexOf('sound=on') > -1;
 var is_shoot = false;
+
 
 $('.enemy').click(function(){
 
@@ -187,7 +188,7 @@ $('#start').click(function(){
 });
 
 function playSound(id){
-    if( music_on ){
+    if( sound_on ){
         $('#sound_' + id)[0].currentTime = 0;
         $('#sound_' + id)[0].play();
     }

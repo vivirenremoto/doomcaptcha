@@ -36,7 +36,6 @@ body{font-family:arial;}
 var captcha_done = false;
 
 function captcha_complete(e) {
-    alert('aaa');
     if (e.origin.indexOf('vivirenremoto.github.io') > -1) {
         captcha_done = true;
         
@@ -44,14 +43,17 @@ function captcha_complete(e) {
 }
 
 function showCaptcha(){
+
     $('#doom_captcha').html('<p>Captcha<br><iframe src="https://vivirenremoto.github.io/doomcaptcha/captcha.html" style="width:300px;height:150px;border:1px black solid;"></iframe></p>');
     
     window.addEventListener('message', captcha_complete, false);
 
     $('#form').submit(function (event) {
+
         if (captcha_done) {
             alert('form sent');
         }else{
+
             event.preventDefault();
             return;
         }

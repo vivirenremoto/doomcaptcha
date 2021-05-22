@@ -52,6 +52,12 @@ body {
 </style>
 
 
+<div id="start" style="font-size:30px;z-index:4;color:white;background:black;position:fixed;left:0;top:0;width:100%;height:100%;display:flex;text-align:center;justify-content: center;align-items: center;">
+    <div><span style="display:block;color:red">kill 3 enemies</span>
+    click to start
+</div>
+</div>
+
 
 <div class="enemy" style="z-index:2;background:url('static/enemy_walk2.gif');position:fixed;left:120px;width:70px;height:70px;background-size:cover;"></div>
 
@@ -73,19 +79,33 @@ var screen_width;
 var screen_height;
 var enemy_width = 70;
 var enemy_height = 70;
-
+var total_kills = 0;
+var max_kills = 3;
 
 $('.enemy').click(function(){
-    $(this).css('background-image', "url('static/dead2.gif')").css('width',115).css('height',115).css('background-position','-130px -40px');
+    var timestamp = new Date().getTime();
+    $(this).css('background-image', "url('static/dead2.gif?v=" + timestamp + "')").css('width',115).css('height',115).css('background-position','-130px -40px');
     $('#gun').css('bottom',-20);
 
     setTimeout(function(){
         $('#gun').css('bottom',-10);
     }, 200);
+
+    
+    total_kills++;
+
+
     
     setTimeout(function(){
-        $('#ok').css('display','flex');
-        postSize(1);
+
+        if( total_kills == max_kills ){
+            $('#ok').css('display','flex');
+            postSize(1);
+        }else{
+            showEnemy();
+        }
+
+ 
     }, 1000);
 });
 
@@ -103,19 +123,30 @@ function randomNumber(min, max) {
     }
 }
 
+function showEnemy(){
+    $('.enemy').css('background-image', "url('static/enemy_walk2.gif')").css('width',enemy_width).css('height',enemy_height).css('background-position','left top');
+    $('.enemy').css('left', randomNumber(0, screen_width-enemy_width) );
+
+
+}
+
 function postSize(height) {
     var target = parent.postMessage ? parent : (parent.document.postMessage ? parent.document : undefined);
 
-    if (typeof target != "undefined" && document.body.scrollHeight) {
+    //if (typeof target != "undefined" && document.body.scrollHeight) {
         target.postMessage(height, "*");
-    }
+    //}
 }
+
+$('#start').click(function(){
+    $(this).hide();
+});
+
 
 $(window).resize(function(){
     screen_width = $(window).width();
     screen_height = $(window).height();
-
-    $('.enemy').css('left', randomNumber(0, screen_width-enemy_width) );//.css('top', randomNumber(0, screen_height-(enemy_height*2)) );
+    showEnemy();
 });
 
 $(window).resize();

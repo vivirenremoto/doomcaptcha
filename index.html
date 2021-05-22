@@ -1,16 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>DOOM Captcha</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DOOM Captcha</title>
+
+    <link rel="shortcut icon" href="favicon.ico"/>
+
+    <meta property="og:image" content="https://vivirenremoto.github.io/doomcaptcha/static/social.jpg">
+    <meta property="og:image:secure_url" content="https://vivirenremoto.github.io/doomcaptcha/static/social.jpg">
+    <meta property="og:image:alt" content="DOOM Captcha">
+    <meta property="og:image:type" content="image/png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DOOM Captcha">
+    <meta name="twitter:image" content="https://vivirenremoto.github.io/doomcaptcha/static/social.jpg">
+
 </head>
 <body>
 
 <style>
 body{font-family:arial;}
 </style>
+
+<a href="https://twitter.com/vivirenremoto" target="_blank" class="twitter" 
+style="cursor:pointer;font-size:20px;position:fixed;right:10px;top:10px;text-decoration:none;">by
+@vivirenremoto</a>
 
 <h1>Doom Captcha</h1>
 
@@ -43,7 +58,7 @@ function captcha_complete(e) {
     }
 }
 
-function showCaptcha(){
+function showCaptcha (){
 
     $('#doom_captcha').html('<p>Captcha<br><iframe src="https://vivirenremoto.github.io/doomcaptcha/captcha.html" style="width:300px;height:150px;border:1px black solid;"></iframe></p>');
     

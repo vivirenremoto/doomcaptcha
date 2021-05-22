@@ -65,14 +65,14 @@ var captcha_done = false;
 function captcha_complete(e) {
     if (e.origin.indexOf('vivirenremoto.github.io') > -1) {
         captcha_done = true;
-        $('#doom_captcha iframe').css('border','1px black solid');
+        $('#doom_captcha iframe').css('border','2px black solid');
         
     }
 }
 
 function showCaptcha (){
 
-    $('#doom_captcha').html('<p>Captcha<br><iframe src="https://vivirenremoto.github.io/doomcaptcha/captcha.html" style="width:300px;height:150px;border:1px black solid;"></iframe></p>');
+    $('#doom_captcha').html('<p>Captcha<br><iframe src="https://vivirenremoto.github.io/doomcaptcha/captcha.html" style="width:300px;height:150px;border:2px black solid;"></iframe></p>');
     
     window.addEventListener('message', captcha_complete, false);
 
@@ -82,7 +82,7 @@ function showCaptcha (){
             alert('form sent');
         }else{
 
-            $('#doom_captcha iframe').css('border','1px red solid');
+            $('#doom_captcha iframe').css('border','2px red solid');
             
 
             event.preventDefault();

@@ -45,7 +45,7 @@ function captcha_complete(e) {
 }
 
 $(function() {
-    $('#form').submit(function () {
+    $('#form').submit(function (event) {
         if (captcha_done) {
             alert('form sent');
         }else{

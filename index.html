@@ -40,65 +40,45 @@ style="cursor:pointer;font-size:20px;position:fixed;right:10px;top:10px;text-dec
 @vivirenremoto</a>
 
 <h1>Doom Captcha</h1>
+<hr>
+<br>
 
+<h2>Demo</h2>
 
-<form id="form">
+<form id="form" method="post" action="success.html">
     <p>
         Your Email<br>
         <input name="email">
     </p>
 
-    <div id="doom_captcha"></div>
+    <script src="https://vivirenremoto.github.io/doomcaptcha/script.js?v=1" music="on" version="1"></script>
     
     <p>
         <button type="submit">Unsubscribe</button>
     </p>
 </form>
 
+<br>
+<hr>
+<br>
 
+<h2>Implementation</h2>
 
+<pre>
+&lt;form id="form" method="post" action="success.html"&gt;
+    &lt;p&gt;
+        Your Email&lt;br&gt;
+        &lt;input name="email"&gt;
+    &lt;/p&gt;
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-<script>
-var captcha_done = false;
+    <div style="color:blue;padding-left:30px;">&lt;script src="https://vivirenremoto.github.io/doomcaptcha/script.js?v=1" music="on" version="1"&gt;&lt;/script&gt;</div>
 
-function captcha_complete(e) {
-    if (e.origin.indexOf('vivirenremoto.github.io') > -1) {
-        captcha_done = true;
-        $('#doom_captcha iframe').css('border','2px black solid');
-        
-    }
-}
+    &lt;p&gt;
+        &lt;button type="submit"&gt;Unsubscribe newsletter&lt;/button&gt;
+    &lt;/p&gt;
+&lt;/form&gt;
+</body>
 
-function showCaptcha (){
-
-    $('#doom_captcha').html('<p>Captcha<br><iframe src="https://vivirenremoto.github.io/doomcaptcha/captcha.html" style="width:300px;height:150px;border:2px black solid;"></iframe></p>');
-    
-    window.addEventListener('message', captcha_complete, false);
-
-    $('#form').submit(function (event) {
-
-        if (captcha_done) {
-            alert('form sent');
-        }else{
-
-            $('#doom_captcha iframe').css('border','2px red solid');
-            
-
-            event.preventDefault();
-            return;
-        }
-    });
-
-}
-
-$(function() {
-
-    showCaptcha();
-
-
-});
-</script>
 
 </body>
 </html>

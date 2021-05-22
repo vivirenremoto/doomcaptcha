@@ -9,9 +9,12 @@
 
     <link rel="shortcut icon" href="favicon.ico"/>
     
-    <link rel="prefetch" href="static/enemy_walk2.gif" />
+    <link rel="prefetch" href="static/normal.gif" />
     <link rel="prefetch" href="static/gun.gif" />
-    <link rel="prefetch" href="static/dead2.gif" />
+    <link rel="prefetch" href="static/dead3.gif" />
+    <link rel="prefetch" href="static/mp3/music.mp3" />
+    <link rel="prefetch" href="static/mp3/shoot.mp3" />
+    <link rel="prefetch" href="static/mp3/ok.mp3" />
 
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 
@@ -63,24 +66,38 @@ body {
 </style>
 
 
+
 <div id="start" style="font-size:20px;z-index:4;color:white;background:black;position:fixed;left:0;top:0;width:100%;height:100%;display:flex;text-align:center;justify-content: center;align-items: center;">
-    <div><span style="display:block;color:red">kill 3 enemies</span>
-    click to start
+    <div>
+        <span style="display:block;color:red">kill 3 enemies</span>
+        click to start
+    </div>
 </div>
+
+<div id="game">
+    <div class="enemy" style="display:none;z-index:2;background:url('static/enemy_walk2.gif');position:fixed;left:120px;width:70px;height:70px;background-size:cover;"></div>
+
+    <div id="gun" style="z-index:1;background:url('static/gun.gif');background-position:center bottom;background-size:350px;background-repeat:no-repeat;width:100%;height:100px;position:fixed;left:0;bottom:-10px;"></div>
 </div>
-
-
-<div class="enemy" style="z-index:2;background:url('static/enemy_walk2.gif');position:fixed;left:120px;width:70px;height:70px;background-size:cover;"></div>
-
 
 <div id="ok" style="display:none;z-index:3;color:white;background:#31AE33;position:fixed;left:0;top:0;width:100%;height:100%;text-align:center;justify-content: center;align-items: center;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
         <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
       </svg>
 </div>
 
-<div id="gun" style="z-index:1;background:url('static/gun.gif');background-position:center bottom;background-size:350px;background-repeat:no-repeat;width:100%;height:100px;position:fixed;left:0;bottom:-10px;"></div>
-  
+
+<audio id="sound_music" loop>
+    <source src="static/mp3/music.mp3" type="audio/mp3">
+</audio>
+
+<audio id="sound_shoot">
+    <source src="static/mp3/shoot.mp3" type="audio/mp3">
+</audio>
+
+<audio id="sound_ok">
+    <source src="static/mp3/ok.mp3" type="audio/mp3">
+</audio>
 
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"
@@ -92,32 +109,49 @@ var enemy_width = 70;
 var enemy_height = 70;
 var total_kills = 0;
 var max_kills = 3;
+var music_on = document.location.href.indexOf('music=on') > -1;
+var is_shoot = false;
 
 $('.enemy').click(function(){
-    var timestamp = new Date().getTime();
-    $(this).css('background-image', "url('static/dead2.gif?v=" + timestamp + "')").css('width',115).css('height',115).css('background-position','-130px -40px');
-    $('#gun').css('bottom',-20);
 
-    setTimeout(function(){
-        $('#gun').css('bottom',-10);
-    }, 200);
+    if( !is_shoot ){
+        is_shoot = true;
+    
+
+        
+        playSound('shoot');
+
+        $('.enemy').css('background-image', "url('static/dead3.gif')").css('width',115).css('height',115).css('background-position','-130px -40px');
+        $('#gun').css('bottom',-20);
+
+        setTimeout(function(){
+            $('#gun').css('bottom',-10);
+            $('.enemy').fadeOut('slow');
+        }, 200);
+
+        
+        total_kills++;
+
+
+        
+        setTimeout(function(){
+
+            if( total_kills == max_kills ){
+                $('#ok').css('display','flex');
+                playSound('ok');
+                $('#sound_music')[0].pause();
+                postSize(1);
+            }else{
+                setTimeout(function(){
+                    showEnemy();
+                    is_shoot = false;
+                }, 100);
+            }
 
     
-    total_kills++;
+        }, 1000);
 
-
-    
-    setTimeout(function(){
-
-        if( total_kills == max_kills ){
-            $('#ok').css('display','flex');
-            postSize(1);
-        }else{
-            showEnemy();
-        }
-
- 
-    }, 1000);
+    }
 });
 
 function randomNumber(min, max) {
@@ -135,10 +169,7 @@ function randomNumber(min, max) {
 }
 
 function showEnemy(){
-    $('.enemy').css('background-image', "url('static/enemy_walk2.gif')").css('width',enemy_width).css('height',enemy_height).css('background-position','left top');
-    $('.enemy').css('left', randomNumber(0, screen_width-enemy_width) );
-
-
+    $('.enemy').css('background-image', "url('static/normal.gif')").css('width',enemy_width).css('height',enemy_height).css('background-position','left top').css('left', randomNumber(0, screen_width-enemy_width) ).fadeIn('slow');
 }
 
 function postSize(height) {
@@ -151,16 +182,30 @@ function postSize(height) {
 
 $('#start').click(function(){
     $(this).hide();
+    playSound('music');
+    showEnemy();
 });
+
+function playSound(id){
+    if( music_on ){
+        $('#sound_' + id)[0].currentTime = 0;
+        $('#sound_' + id)[0].play();
+    }
+}
 
 
 $(window).resize(function(){
     screen_width = $(window).width();
     screen_height = $(window).height();
-    showEnemy();
 });
 
 $(window).resize();
+
+
+$(function(){
+    $('#sound_shoot')[0].volume = 0.5;
+    $('#sound_music')[0].volume = 0.5;
+});
 </script>
 
 </body>

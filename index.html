@@ -21,9 +21,7 @@ body{font-family:arial;}
         <input name="email" required>
     </p>
 
-    <p>Captcha<br>
-        <iframe src="captcha.html" style="width:300px;height:150px;border:1px black solid;"></iframe>
-    </p>
+    <div id="doom_captcha"></div>
     
     <p>
         <button type="submit">Unsubscribe</button>
@@ -38,13 +36,18 @@ body{font-family:arial;}
 var captcha_done = false;
 
 function captcha_complete(e) {
+    alert('aaa');
     if (e.origin.indexOf('vivirenremoto.github.io') > -1) {
         captcha_done = true;
         
     }
 }
 
-$(function() {
+function showCaptcha(){
+    $('#doom_captcha').html('<p>Captcha<br><iframe src="https://vivirenremoto.github.io/doomcaptcha/captcha.html" style="width:300px;height:150px;border:1px black solid;"></iframe></p>');
+    
+    window.addEventListener('message', captcha_complete, false);
+
     $('#form').submit(function (event) {
         if (captcha_done) {
             alert('form sent');
@@ -54,7 +57,13 @@ $(function() {
         }
     });
 
-    window.addEventListener('message', captcha_complete, false);
+}
+
+$(function() {
+
+    showCaptcha();
+
+
 });
 </script>
 

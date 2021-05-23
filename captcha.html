@@ -212,7 +212,7 @@ function startGame(){
     showEnemy();
 
     var timer_game = setInterval(function(){
-        current_time--;
+        current_time -= 0.125;
 
         if( current_time <= 0 && total_kills != max_kills ){
             $('#gameover').css('display','flex');
@@ -225,7 +225,7 @@ function startGame(){
             $('#percent').css('width', time_percent + '%');
 
         }
-    }, 1000);
+    }, 125);
 }
 
 $('#start').click(function(){

@@ -1,7 +1,7 @@
-var captcha_vesion = 1;
+var captcha_version = 2;
 var captcha_done = false;
 var captcha_label = document.currentScript.getAttribute('label');
-var captcha_enemies = document.currentScript.getAttribute('enemies');
+var captcha_enemies = parseInt(document.currentScript.getAttribute('enemies'));
 if( !captcha_enemies ){
     captcha_enemies = 3;
 }
@@ -11,7 +11,7 @@ if( captcha_label ){
     captcha_html = '<p>' + captcha_label + '<br>';
 }
 
-captcha_html += '<iframe id="doom_captcha" src="captcha.html?version=' + captcha_vesion + '&sound=' + document.currentScript.getAttribute('sound') + '&enemies=' + captcha_enemies + '" style="width:300px;height:150px;border:2px black solid;"></iframe>';
+captcha_html += '<iframe id="doom_captcha" src="captcha.html?version=' + captcha_version + '&sound=' + document.currentScript.getAttribute('sound') + '&enemies=' + captcha_enemies + '" style="width:300px;height:150px;border:2px black solid;"></iframe>';
 
 if( captcha_label ){
     captcha_html += '</p>';

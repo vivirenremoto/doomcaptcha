@@ -211,7 +211,7 @@ function postSize(height) {
 function startGame(){
     showEnemy();
 
-    var timer_game = setInterval(function(){
+    timer_game = setInterval(function(){
         current_time -= 0.125;
 
         if( current_time <= 0 && total_kills != max_kills ){

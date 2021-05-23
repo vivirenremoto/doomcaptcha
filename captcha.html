@@ -118,7 +118,7 @@ var screen_height;
 var enemy_width = 70;
 var enemy_height = 70;
 var total_kills = 0;
-var max_kills = 3;
+var max_kills = 4;
 var sound_on = document.location.href.indexOf('sound=on') > -1;
 var is_shoot = false;
 var time_seconds;
@@ -129,7 +129,7 @@ if( document.location.href.indexOf('enemies') > -1 ){
     max_kills = parseInt(document.location.href.split('enemies=')[1].split('&')[0]);
 }
 
-time_seconds = max_kills * 2;
+time_seconds = max_kills * 1.4;
 current_time = time_seconds;
 
 
@@ -151,7 +151,7 @@ $('.enemy').click(function(){
 
         setTimeout(function(){
             $('#gun').css('bottom',-10);
-            $('.enemy').fadeOut('slow', function(){
+            $('.enemy').fadeOut('fast', function(){
 
                 if( total_kills != max_kills ){
                     setTimeout(function(){
@@ -197,7 +197,7 @@ function randomNumber(min, max) {
 }
 
 function showEnemy(){
-    $('.enemy').css('background-image', "url('static/normal.gif')").css('width',enemy_width).css('height',enemy_height).css('background-position','left top').css('left', randomNumber(0, screen_width-enemy_width) ).fadeIn('slow');
+    $('.enemy').css('background-image', "url('static/normal.gif')").css('width',enemy_width).css('height',enemy_height).css('background-position','left top').css('left', randomNumber(0, screen_width-enemy_width) ).show();
 }
 
 function postSize(height) {
@@ -216,7 +216,7 @@ $('#start').click(function(){
     var timer_game = setInterval(function(){
         current_time--;
 
-        if( current_time == 0 && total_kills != max_kills ){
+        if( current_time <= 0 && total_kills != max_kills ){
             $('#gameover').css('display','flex');
 
             clearInterval(timer_game);

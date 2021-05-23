@@ -208,9 +208,7 @@ function postSize(height) {
     //}
 }
 
-$('#start').click(function(){
-    $(this).hide();
-    playSound('music');
+function startGame(){
     showEnemy();
 
     var timer_game = setInterval(function(){
@@ -222,16 +220,26 @@ $('#start').click(function(){
             clearInterval(timer_game);
         }else{
 
-            time_percent = ( current_time * 100 ) / time_seconds;
+            time_percent = parseInt( ( current_time * 100 ) / time_seconds);
 
             $('#percent').css('width', time_percent + '%');
 
         }
-    }, 1000)
+    }, 1000);
+}
+
+$('#start').click(function(){
+    $(this).hide();
+    playSound('music');
+    startGame();
 });
 
 $('#gameover').click(function(){
-    document.location.reload();
+    current_time = time_seconds;
+    $(this).hide();
+    $('#percent').css('width', '100%');
+    total_kills = 0;
+    startGame();
 });
 
 function playSound(id){

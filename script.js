@@ -3,7 +3,7 @@ var captcha_done = false;
 var captcha_label = document.currentScript.getAttribute('label');
 var captcha_enemies = parseInt(document.currentScript.getAttribute('enemies'));
 if( !captcha_enemies ){
-    captcha_enemies = 3;
+    captcha_enemies = 4;
 }
 
 var captcha_html = '';

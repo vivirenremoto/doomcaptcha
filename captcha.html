@@ -74,10 +74,20 @@ body {
     </div>
 </div>
 
+<div id="gameover" style="font-size:20px;z-index:4;color:white;background:black;position:fixed;left:0;top:0;width:100%;height:100%;display:none;text-align:center;justify-content: center;align-items: center;">
+    <div>
+        <div style="display:block;color:red">gameover</div>
+        click to restart
+    </div>
+</div>
+
 <div id="game">
     <div class="enemy" style="display:none;z-index:2;background:url('static/enemy_walk2.gif');position:fixed;left:120px;width:70px;height:70px;background-size:cover;"></div>
 
     <div id="gun" style="z-index:1;background:url('static/gun.gif');background-position:center bottom;background-size:350px;background-repeat:no-repeat;width:100%;height:100px;position:fixed;left:0;bottom:-10px;"></div>
+
+    
+    <table cellpadding="0" cellspacing="0" border="0" style="z-index:2;position:fixed;left:0;bottom:0;width:100%;height:7px;"><td id="percent" bgcolor="red" width="100%"></td><td bgcolor="black"></td></table>
 </div>
 
 <div id="ok" style="cursor:default;display:none;z-index:3;color:white;background:#31AE33;position:fixed;left:0;top:0;width:100%;height:100%;text-align:center;justify-content: center;align-items: center;">
@@ -111,10 +121,17 @@ var total_kills = 0;
 var max_kills = 3;
 var sound_on = document.location.href.indexOf('sound=on') > -1;
 var is_shoot = false;
+var time_seconds;
+var current_time;
+var timer_game;
 
 if( document.location.href.indexOf('enemies') > -1 ){
-    max_kills = document.location.href.split('enemies=')[1];
+    max_kills = parseInt(document.location.href.split('enemies=')[1].split('&')[0]);
 }
+
+time_seconds = max_kills * 2;
+current_time = time_seconds;
+
 
 $('.enemy').click(function(){
 
@@ -128,13 +145,25 @@ $('.enemy').click(function(){
         $('.enemy').css('background-image', "url('static/dead3.gif')").css('width',115).css('height',115).css('background-position','-130px -40px');
         $('#gun').css('bottom',-20);
 
+
+
+        total_kills++;
+
         setTimeout(function(){
             $('#gun').css('bottom',-10);
-            $('.enemy').fadeOut('slow');
+            $('.enemy').fadeOut('slow', function(){
+
+                if( total_kills != max_kills ){
+                    setTimeout(function(){
+                        showEnemy();
+                        is_shoot = false;
+                    }, 100);
+                }
+
+            });
         }, 200);
 
         
-        total_kills++;
 
 
         
@@ -145,15 +174,10 @@ $('.enemy').click(function(){
                 playSound('ok');
                 $('#sound_music')[0].pause();
                 postSize(1);
-            }else{
-                setTimeout(function(){
-                    showEnemy();
-                    is_shoot = false;
-                }, 100);
             }
 
     
-        }, 1000);
+        }, 500);
 
     }
 });
@@ -188,6 +212,26 @@ $('#start').click(function(){
     $(this).hide();
     playSound('music');
     showEnemy();
+
+    var timer_game = setInterval(function(){
+        current_time--;
+
+        if( current_time == 0 && total_kills != max_kills ){
+            $('#gameover').css('display','flex');
+
+            clearInterval(timer_game);
+        }else{
+
+            time_percent = ( current_time * 100 ) / time_seconds;
+
+            $('#percent').css('width', time_percent + '%');
+
+        }
+    }, 1000)
+});
+
+$('#gameover').click(function(){
+    document.location.reload();
 });
 
 function playSound(id){

@@ -87,7 +87,7 @@ body {
     <div id="gun" style="z-index:1;background:url('static/gun.gif');background-position:center bottom;background-size:350px;background-repeat:no-repeat;width:100%;height:100px;position:fixed;left:0;bottom:-10px;"></div>
 
     
-    <table cellpadding="0" cellspacing="0" border="0" style="z-index:2;position:fixed;left:0;bottom:0;width:100%;height:7px;"><td id="percent" bgcolor="red" width="100%"></td><td bgcolor="black"></td></table>
+    <table id="countdown" cellpadding="0" cellspacing="0" border="0" style="display:none;z-index:2;position:fixed;left:0;bottom:0;width:100%;height:7px;"><td id="percent" bgcolor="red" width="100%"></td><td bgcolor="black"></td></table>
 </div>
 
 <div id="ok" style="cursor:default;display:none;z-index:3;color:white;background:#31AE33;position:fixed;left:0;top:0;width:100%;height:100%;text-align:center;justify-content: center;align-items: center;">
@@ -120,6 +120,7 @@ var enemy_height = 70;
 var total_kills = 0;
 var max_kills = 4;
 var sound_on = document.location.href.indexOf('sound=on') > -1;
+var countdown = document.location.href.indexOf('countdown=on') > -1;
 var is_shoot = false;
 var time_seconds;
 var current_time;
@@ -211,21 +212,25 @@ function postSize(height) {
 function startGame(){
     showEnemy();
 
-    timer_game = setInterval(function(){
-        current_time -= 0.125;
+    if( countdown ){
+        $('#countdown').show();
 
-        if( current_time <= 0 && total_kills != max_kills ){
-            $('#gameover').css('display','flex');
+        timer_game = setInterval(function(){
+            current_time -= 0.125;
 
-            clearInterval(timer_game);
-        }else{
+            if( current_time <= 0 && total_kills != max_kills ){
+                $('#gameover').css('display','flex');
 
-            time_percent = parseInt( ( current_time * 100 ) / time_seconds);
+                clearInterval(timer_game);
+            }else{
 
-            $('#percent').css('width', time_percent + '%');
+                time_percent = parseInt( ( current_time * 100 ) / time_seconds);
 
-        }
-    }, 125);
+                $('#percent').css('width', time_percent + '%');
+
+            }
+        }, 125);
+    }
 }
 
 $('#start').click(function(){

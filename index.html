@@ -32,11 +32,19 @@
 
 
 <style>
-body{font-family:arial;padding:20px;}
+body{font-family:arial;padding:20px;padding-bottom:60px;}
 h1{color:red;border-bottom:1px red solid;padding-bottom:5px;margin-bottom:40px;}
+
+#btn_feedback{font-size:17px;display:none;background:green;text-decoration:none;color:white;padding:15px 0;position:fixed;text-align:center;right:0;bottom:0;width:100%;}
+
+
 </style>
 
+
+<a id="btn_feedback" href="https://forms.gle/h7REigxfxNNx7tEx5" target="_blank">😎 Are you interested in more <b>captcha games</b>?</a>
+
 <br><br>
+
 
 <h1>😈 Doom Captcha</h1>
 
@@ -58,7 +66,7 @@ h1{color:red;border-bottom:1px red solid;padding-bottom:5px;margin-bottom:40px;}
     <script src="script.js?version=9" sound="on" countdown="on" label="Captcha" enemies="4"></script>
     
     <p>
-        <button type="submit">Unsubscribe</button>
+        <button type="submit">Unsubscribe</button> <button onclick="document.location.reload()">Restart</button>
     </p>
 </form>
 
@@ -123,6 +131,15 @@ Do you like it? I made the worst captcha ever <a href="https://www.producthunt.c
 <a href="https://www.linkedin.com/in/miquelcamps/" target="_blank" style="text-decoration:none;font-weight:bold;color:#000">🟢 Available for work</a>
 
 <br><br>
+
+
+
+
+<script>
+setTimeout(function(){
+    document.getElementById('btn_feedback').style.display = 'block';
+}, 5000);
+</script>
 
 </body>
 </html>

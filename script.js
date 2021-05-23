@@ -1,4 +1,4 @@
-var captcha_version = 7;
+var captcha_version = 8;
 var captcha_done = false;
 var captcha_label = document.currentScript.getAttribute('label');
 var captcha_enemies = parseInt(document.currentScript.getAttribute('enemies'));

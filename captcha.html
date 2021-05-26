@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="shortcut icon" href="favicon.ico"/>
-    
+
     <link rel="prefetch" href="static/normal.gif" />
     <link rel="prefetch" href="static/gun.gif" />
     <link rel="prefetch" href="static/dead3.gif" />
@@ -132,7 +132,7 @@ current_time = time_seconds;
 $('.enemy').click(function() {
     if(!is_shoot ) {
         is_shoot = true;
-        
+
         playSound('shoot');
 
         $('.enemy').css('background-image', "url('static/dead3.gif')").css('width', 115).css('height', 115).css('background-position', '-130px -40px');
@@ -257,7 +257,7 @@ $('#cheatcode').keyup(function() {
     if ($(this).css('opacity', 1).val().toUpperCase() == 'IDDQD') {
         $('#cheatcode').val('').hide();
         $('#gameover').hide();
-        endGame();   
+        endGame();
     }
 });
 

@@ -28,7 +28,7 @@ window.addEventListener('message', function(e){
 }, false);
 
 
-document.getElementById('doom_captcha').parentNode.parentNode.addEventListener('submit', function(){
+document.getElementById('doom_captcha').closest('form').addEventListener('submit', function(){
     if ( !captcha_done ) {
         document.getElementById('doom_captcha').style.borderColor = 'red';
         event.preventDefault();

@@ -193,6 +193,7 @@ function endGame() {
     playSound('ok');
     $('#sound_music')[0].pause();
     postSize(1);
+    $('#cheatcode').css('opacity',0);
     if (timer_game) {
         clearTimeout(timer_game);
     }

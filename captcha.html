@@ -134,7 +134,8 @@ var screen_height;
 var enemy_width = 62;
 var enemy_height = 89;
 var total_kills = 0;
-var max_kills = 4;
+var max_kills = 0;
+var default_kills = 4;
 var sound_on;
 var countdown = document.location.href.indexOf('countdown=on') > -1;
 var is_shoot = false;
@@ -144,6 +145,10 @@ var timer_game;
 
 if (document.location.href.indexOf('enemies') > -1) {
     max_kills = parseInt(document.location.href.split('enemies=')[1].split('&')[0]);
+}
+
+if( max_kills < 1 ){
+    max_kills = default_kills;
 }
 
 time_seconds = max_kills * 2;

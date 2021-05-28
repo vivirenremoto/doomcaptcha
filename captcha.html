@@ -57,10 +57,12 @@ body {
     cursor: url(static/cursor2.png), default !important;
 }
 
-.enemy {
-    cursor: url(static/cursor3.png), default !important;
-    top: 50%;
-    margin-top: -50px;
+.enemy{
+    cursor: url(static/cursor3.png) , default!important;
+    top:50%;
+    margin-top:-57px;
+    background-repeat:no-repeat;
+
 }
 </style>
 
@@ -79,7 +81,7 @@ body {
 </div>
 
 <div id="game">
-    <div class="enemy" style="display:none;z-index:2;background:url('static/enemy_walk2.gif');position:fixed;left:120px;width:70px;height:70px;background-size:cover;"></div>
+    <div class="enemy" style="display:none;z-index:2;position:fixed;left:120px;"></div>
 
     <div id="gun" style="z-index:1;background:url('static/gun.gif');background-position:center bottom;background-size:350px;background-repeat:no-repeat;width:100%;height:100px;position:fixed;left:0;bottom:-10px;"></div>
 
@@ -111,8 +113,8 @@ body {
 <script>
 var screen_width;
 var screen_height;
-var enemy_width = 70;
-var enemy_height = 70;
+var enemy_width = 62;
+var enemy_height = 89;
 var total_kills = 0;
 var max_kills = 4;
 var sound_on = document.location.href.indexOf('sound=on') > -1;
@@ -126,7 +128,7 @@ if (document.location.href.indexOf('enemies') > -1) {
     max_kills = parseInt(document.location.href.split('enemies=')[1].split('&')[0]);
 }
 
-time_seconds = max_kills * 1.4;
+time_seconds = max_kills * 2;
 current_time = time_seconds;
 
 $('.enemy').click(function() {
@@ -135,7 +137,7 @@ $('.enemy').click(function() {
 
         playSound('shoot');
 
-        $('.enemy').css('background-image', "url('static/dead3.gif')").css('width', 115).css('height', 115).css('background-position', '-130px -40px');
+        $('.enemy').css('background-image', "url('static/dead3.gif')").css('width',115).css('height',115).css('background-position','-33px -40px').css('background-size','130px');
         $('#gun').css('bottom', -20);
 
         total_kills++;
@@ -188,15 +190,13 @@ function randomNumber(min, max) {
 }
 
 function showEnemy() {
-    $('.enemy').css('background-image', "url('static/normal.gif')").css('width', enemy_width).css('height', enemy_height).css('background-position', 'left top').css('left', randomNumber(0, screen_width-enemy_width)).show();
+    $('.enemy').css('background-image', "url('static/normal.gif')").css('width',enemy_width).css('height',enemy_height).css('left', randomNumber(0, screen_width-enemy_width)).css('background-position','right 14px').css('background-size','70px').show();
 }
 
 function postSize(height) {
     var target = parent.postMessage ? parent : (parent.document.postMessage ? parent.document : undefined);
 
-    //if (typeof target != "undefined" && document.body.scrollHeight) {
-        target.postMessage(height, "*");
-    //}
+    target.postMessage(height, "*");
 }
 
 function startGame() {

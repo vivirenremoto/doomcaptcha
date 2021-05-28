@@ -1,4 +1,4 @@
-var captcha_version = 12;
+var captcha_version = 13;
 var captcha_done = false;
 var captcha_label = document.currentScript.getAttribute('label');
 var captcha_enemies = parseInt(document.currentScript.getAttribute('enemies'));
@@ -11,7 +11,7 @@ if (captcha_label) {
     captcha_html = '<p>' + captcha_label + '<br>';
 }
 
-captcha_html += '<iframe id="doom_captcha" src="https://vivirenremoto.github.io/doomcaptcha/captcha.html?version=' + captcha_version + '&sound=' + document.currentScript.getAttribute('sound') + '&countdown=' + document.currentScript.getAttribute('countdown') + '&enemies=' + captcha_enemies + '" style="width:300px;height:150px;border:2px black solid;"></iframe>';
+captcha_html += '<iframe id="doom_captcha" src="https://vivirenremoto.github.io/doomcaptcha/captcha.html?version=' + captcha_version + '&countdown=' + document.currentScript.getAttribute('countdown') + '&enemies=' + captcha_enemies + '" style="width:300px;height:150px;border:2px black solid;"></iframe>';
 
 if (captcha_label) {
     captcha_html += '</p>';

@@ -11,7 +11,7 @@
     <link rel="prefetch" href="static/normal.gif" />
     <link rel="prefetch" href="static/gun.gif" />
     <link rel="prefetch" href="static/dead3.gif" />
-    <link rel="prefetch" href="static/mp3/music.mp3" />
+    <link rel="prefetch" href="static/mp3/music2.mp3" />
     <link rel="prefetch" href="static/mp3/shoot.mp3" />
     <link rel="prefetch" href="static/mp3/ok.mp3" />
 
@@ -53,6 +53,12 @@ body {
     cursor: url(static/cursor2.png), default !important;
 }
 
+button{background:none;border:1px #fff solid;color:#fff;cursor:pointer;margin-top:17px;}
+
+#start, #ok{cursor:default;}
+
+#btn_again{display:block;margin-top:0;border:0;}
+
 #cheatcode {
     cursor: url(static/cursor2.png), default !important;
 }
@@ -70,6 +76,15 @@ body {
     <div>
         <div style="display:block;color:red">kill <span id="max_kills" style="color:red">4</span> enemies</div>
         click to start
+        <br>
+        <button id="btn_start"><svg style="margin-bottom:-7px;margin-right:10px;" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-volume-up-fill" viewBox="0 0 16 16">
+            <path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"/>
+            <path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"/>
+            <path d="M8.707 11.182A4.486 4.486 0 0 0 10.025 8a4.486 4.486 0 0 0-1.318-3.182L8 5.525A3.489 3.489 0 0 1 9.025 8 3.49 3.49 0 0 1 8 10.475l.707.707zM6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06z"/>
+          </svg>ON</button> &nbsp; 
+        <button id="btn_start_mute"><svg style="margin-bottom:-7px;margin-right:10px;" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-volume-mute-fill" viewBox="0 0 16 16">
+            <path d="M6.717 3.55A.5.5 0 0 1 7 4v8a.5.5 0 0 1-.812.39L3.825 10.5H1.5A.5.5 0 0 1 1 10V6a.5.5 0 0 1 .5-.5h2.325l2.363-1.89a.5.5 0 0 1 .529-.06zm7.137 2.096a.5.5 0 0 1 0 .708L12.207 8l1.647 1.646a.5.5 0 0 1-.708.708L11.5 8.707l-1.646 1.647a.5.5 0 0 1-.708-.708L10.793 8 9.146 6.354a.5.5 0 1 1 .708-.708L11.5 7.293l1.646-1.647a.5.5 0 0 1 .708 0z"/>
+          </svg>OFF</button>
     </div>
 </div>
 
@@ -89,13 +104,16 @@ body {
 </div>
 
 <div id="ok" style="cursor:default;display:none;z-index:3;color:white;background:#31AE33;position:fixed;left:0;top:0;width:100%;height:100%;text-align:center;justify-content: center;align-items: center;">
-    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+    <div>
+    <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
         <path d="M13.485 1.431a1.473 1.473 0 0 1 2.104 2.062l-7.84 9.801a1.473 1.473 0 0 1-2.12.04L.431 8.138a1.473 1.473 0 0 1 2.084-2.083l4.111 4.112 6.82-8.69a.486.486 0 0 1 .04-.045z"/>
-      </svg>
+    </svg>
+    <button id="btn_again">Play again?</button>
+    </div>
 </div>
 
 <audio id="sound_music" loop>
-    <source src="static/mp3/music.mp3" type="audio/mp3">
+    <source src="static/mp3/music2.mp3" type="audio/mp3">
 </audio>
 
 <audio id="sound_shoot">
@@ -117,7 +135,7 @@ var enemy_width = 62;
 var enemy_height = 89;
 var total_kills = 0;
 var max_kills = 4;
-var sound_on = document.location.href.indexOf('sound=on') > -1;
+var sound_on;
 var countdown = document.location.href.indexOf('countdown=on') > -1;
 var is_shoot = false;
 var time_seconds;
@@ -146,12 +164,12 @@ $('.enemy').click(function() {
             $('#gun').css('bottom', -10);
             $('.enemy').fadeOut('fast', function() {
 
-                if (total_kills != max_kills) {
-                    setTimeout(function() {
+                setTimeout(function() {
+                    if (total_kills != max_kills) {
                         showEnemy();
-                        is_shoot = false;
-                    }, 100);
-                }
+                    }
+                    is_shoot = false;
+                }, 100);
 
             });
         }, 200);
@@ -225,11 +243,27 @@ function startGame() {
     }
 }
 
-$('#start').click(function() {
-    $(this).hide();
+$('#btn_start').click(function() {
+    $('#start').hide();
+    sound_on = true;
     playSound('music');
     startGame();
 });
+
+$('#btn_start_mute').click(function() {
+    $('#start').hide();
+    sound_on = false;
+    startGame();
+});
+
+$('#btn_again').click(function() {
+    $('#ok').hide();
+    if (sound_on) {
+        playSound('music');
+    }
+    $('#gameover').click();
+});
+
 
 $('#gameover').click(function() {
     current_time = time_seconds;

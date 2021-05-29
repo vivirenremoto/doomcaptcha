@@ -1,6 +1,6 @@
 # DOOM Captcha
 
-[Web](https://vivirenremoto.github.io/doomcaptcha/)
+[DEMO](https://vivirenremoto.github.io/doomcaptcha/)
 
 [Author](https://twitter.com/vivirenremoto)
 

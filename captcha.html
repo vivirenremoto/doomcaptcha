@@ -231,6 +231,7 @@ function startGame() {
     }
 
     showEnemy();
+    setRandomBackground();
 
     if (countdown) {
         $('#countdown').show();
@@ -303,15 +304,15 @@ $('#cheatcode').keyup(function() {
     }
 });
 
+function setRandomBackground(){
+    $('body').css('background-image', "url('static/backgrounds/" + randomNumber(1, total_backgrounds) + ".png')" );
+}
 
 $(function() {
     $('#sound_shoot')[0].volume = 0.3;
     $('#sound_music')[0].volume = 0.3;
     $('#sound_ok')[0].volume = 0.3;
     $('#max_kills').html(max_kills);
-
-
-    $('body').css('background-image', "url('static/backgrounds/" + randomNumber(1, total_backgrounds) + ".png')" );
 });
 </script>
 

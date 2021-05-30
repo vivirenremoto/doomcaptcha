@@ -44,10 +44,11 @@
 
 body {
     overflow-x: hidden;
-    background: black url('static/bg.jpg');
-    background-size: 160% auto;
-    background-position: center -62%;
+    background: black url('static/backgrounds/1.png');
+    background-size: cover;
+    background-position: top center;
     touch-action: pan-x pan-y;
+    background-repeat:no-repeat;
     width: 100%;
     height: 100%;
     cursor: url(static/cursor2.png), default !important;
@@ -131,6 +132,7 @@ button{background:none;border:1px #fff solid;color:#fff;cursor:pointer;margin-to
 <script>
 var screen_width;
 var screen_height;
+var total_backgrounds = 4;
 var enemy_width = 62;
 var enemy_height = 89;
 var total_kills = 0;
@@ -307,6 +309,9 @@ $(function() {
     $('#sound_music')[0].volume = 0.3;
     $('#sound_ok')[0].volume = 0.3;
     $('#max_kills').html(max_kills);
+
+
+    $('body').css('background-image', "url('static/backgrounds/" + randomNumber(1, total_backgrounds) + ".png')" );
 });
 </script>
 

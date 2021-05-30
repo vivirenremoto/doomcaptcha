@@ -148,6 +148,7 @@ var time_seconds;
 var current_time;
 var timer_game;
 var id_enemy;
+var images_preload = [];
 
 if (document.location.href.indexOf('enemies') > -1) {
     max_kills = parseInt(document.location.href.split('enemies=')[1].split('&')[0]);
@@ -220,9 +221,7 @@ function randomNumber(min, max) {
 }
 
 function showEnemy() {
-
     id_enemy = randomNumber(1, total_enemies);
-
     $('.enemy').css('background-image', "url('static/enemies/" + id_enemy + "_normal.png')").css('left', randomNumber(0, screen_width-enemy_width)).show();
 }
 
@@ -321,6 +320,25 @@ $(function() {
     $('#sound_ok')[0].volume = 0.3;
     $('#max_kills').html(max_kills);
     $('.enemy').css('width',enemy_width).css('height',enemy_height);
+
+
+    for (var i = 1; i <= total_backgrounds; i++) {
+        var image_aux = new Image();
+        image_aux.src = 'static/backgrounds/' + i + '.png';
+        images_preload.push(image_aux); 
+    }
+
+    for (var i = 1; i <= total_enemies; i++) {
+        var image_aux = new Image();
+        image_aux.src = 'static/enemies/' + i + '_normal.png';
+        images_preload.push(image_aux); 
+
+        image_aux = new Image();
+        image_aux.src = 'static/enemies/' + i + '_dead.png';
+        images_preload.push(image_aux); 
+    }
+
+
 });
 </script>
 

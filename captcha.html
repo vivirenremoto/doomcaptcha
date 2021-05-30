@@ -8,9 +8,7 @@
 
     <link rel="shortcut icon" href="favicon.ico"/>
 
-    <link rel="prefetch" href="static/normal.gif" />
     <link rel="prefetch" href="static/gun.gif" />
-    <link rel="prefetch" href="static/dead3.gif" />
     <link rel="prefetch" href="static/mp3/music2.mp3" />
     <link rel="prefetch" href="static/mp3/shoot.mp3" />
     <link rel="prefetch" href="static/mp3/ok.mp3" />
@@ -69,6 +67,10 @@ button{background:none;border:1px #fff solid;color:#fff;cursor:pointer;margin-to
     top:50%;
     margin-top:-57px;
     background-repeat:no-repeat;
+    background-size:100%;
+    background-position:center bottom;
+    image-rendering: pixelated;
+
 
 }
 </style>
@@ -133,6 +135,7 @@ button{background:none;border:1px #fff solid;color:#fff;cursor:pointer;margin-to
 var screen_width;
 var screen_height;
 var total_backgrounds = 4;
+var total_enemies = 6;
 var enemy_width = 62;
 var enemy_height = 89;
 var total_kills = 0;
@@ -144,6 +147,7 @@ var is_shoot = false;
 var time_seconds;
 var current_time;
 var timer_game;
+var id_enemy;
 
 if (document.location.href.indexOf('enemies') > -1) {
     max_kills = parseInt(document.location.href.split('enemies=')[1].split('&')[0]);
@@ -162,7 +166,7 @@ $('.enemy').click(function() {
 
         playSound('shoot');
 
-        $('.enemy').css('background-image', "url('static/dead3.gif')").css('width',115).css('height',115).css('background-position','-33px -40px').css('background-size','130px');
+        $('.enemy').css('background-image', "url('static/enemies/" + id_enemy + "_dead.png')");
         $('#gun').css('bottom', -20);
 
         total_kills++;
@@ -216,7 +220,10 @@ function randomNumber(min, max) {
 }
 
 function showEnemy() {
-    $('.enemy').css('background-image', "url('static/normal.gif')").css('width',enemy_width).css('height',enemy_height).css('left', randomNumber(0, screen_width-enemy_width)).css('background-position','right 14px').css('background-size','70px').show();
+
+    id_enemy = randomNumber(1, total_enemies);
+
+    $('.enemy').css('background-image', "url('static/enemies/" + id_enemy + "_normal.png')").css('left', randomNumber(0, screen_width-enemy_width)).show();
 }
 
 function postSize(height) {
@@ -313,6 +320,7 @@ $(function() {
     $('#sound_music')[0].volume = 0.3;
     $('#sound_ok')[0].volume = 0.3;
     $('#max_kills').html(max_kills);
+    $('.enemy').css('width',enemy_width).css('height',enemy_height);
 });
 </script>
 

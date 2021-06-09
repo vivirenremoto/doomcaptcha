@@ -123,6 +123,10 @@ button{background:none;border:1px #fff solid;color:#fff;cursor:pointer;margin-to
     <source src="static/mp3/shoot.mp3" type="audio/mp3">
 </audio>
 
+<audio id="sound_shootshotgun">
+    <source src="static/mp3/shootshotgun.mp3" type="audio/mp3">
+</audio>
+
 <audio id="sound_ok">
     <source src="static/mp3/ok.mp3" type="audio/mp3">
 </audio>
@@ -147,6 +151,7 @@ var is_shoot = false;
 var time_seconds;
 var current_time;
 var timer_game;
+var idkfa = false;
 var id_enemy;
 var images_preload = [];
 
@@ -165,7 +170,11 @@ $('.enemy').click(function() {
     if (!is_shoot) {
         is_shoot = true;
 
-        playSound('shoot');
+        if (!idkfa) {
+            playSound('shoot');
+        } else {
+            playSound('shootshotgun');
+        }
 
         $('.enemy').css('background-image', "url('static/enemies/" + id_enemy + "_dead.png')");
         $('#gun').css('bottom', -20);
@@ -307,6 +316,9 @@ $('#cheatcode').keyup(function() {
         $('#cheatcode').val('').hide();
         $('#gameover').hide();
         endGame();
+    }
+    if ($(this).css('opacity', 1).val().toUpperCase() == 'IDKFA') {
+        idkfa = true;
     }
 });
 

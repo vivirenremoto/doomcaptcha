@@ -9,8 +9,10 @@
     <link rel="shortcut icon" href="favicon.ico"/>
 
     <link rel="prefetch" href="static/gun.gif" />
+    <link rel="prefetch" href="static/shotgun.gif" />
     <link rel="prefetch" href="static/mp3/music2.mp3" />
     <link rel="prefetch" href="static/mp3/shoot.mp3" />
+    <link rel="prefetch" href="static/mp3/shootshotgun.mp3" />
     <link rel="prefetch" href="static/mp3/ok.mp3" />
 
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
@@ -319,6 +321,7 @@ $('#cheatcode').keyup(function() {
     }
     if ($(this).css('opacity', 1).val().toUpperCase() == 'IDKFA') {
         idkfa = true;
+        document.getElementById("gun").style.backgroundImage='url("static/shotgun.gif"';
         $('#cheatcode').val('').hide();
     }
 });

@@ -185,7 +185,6 @@ $('.enemy').click(function() {
 
         $('#sound_death').attr("src", "static/sound/" + id_enemy + "_kill.wav");
         $('#sound_death')[0].play();
-        console.log("PLAYIN'!");
         $('.enemy').css('background-image', "url('static/enemies/" + id_enemy + "_dead.png')");
         $('#gun').css('bottom', -20);
 

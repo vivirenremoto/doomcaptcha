@@ -182,9 +182,10 @@ $('.enemy').click(function() {
         } else {
             playSound('shootshotgun');
         }
-
-        $('#sound_death').attr("src", "static/sound/" + id_enemy + "_kill.wav");
-        $('#sound_death')[0].play();
+        if (sound_on) {
+            $('#sound_death').attr("src", "static/sound/" + id_enemy + "_kill.wav");
+            $('#sound_death')[0].play();
+        }
         $('.enemy').css('background-image', "url('static/enemies/" + id_enemy + "_dead.png')");
         $('#gun').css('bottom', -20);
 

@@ -100,7 +100,7 @@ button{background:none;border:1px #fff solid;color:#fff;cursor:pointer;margin-to
     </div>
 </div>
 
-<div id="game">
+<div id="game" style="position:fixed;height:100%;width:100%;" onclick="handleMiss(event, this);">
     <div class="enemy" style="display:none;z-index:1;position:fixed;left:120px;"></div>
 
     <div id="gun" style="pointer-events:none;z-index:2;background:url('static/pisga0.png');background-position:left bottom;background-repeat:no-repeat;width:100%;height:100px;position:fixed;left:0;bottom:-10px;"></div>
@@ -159,6 +159,7 @@ var timer_game;
 var idkfa = false;
 var id_enemy;
 var images_preload = [];
+var flash = false;
 
 document.getElementById("sound_death").volume = 0.5;
 
@@ -173,6 +174,29 @@ if( max_kills < 1 ){
 time_seconds = max_kills * 2;
 current_time = time_seconds;
 
+function handleMiss(event, element){
+    if (event.target != element) {
+        event.stopPropagation();
+        return;
+    }
+
+    if (!idkfa) {
+        playSound('shoot');
+    } else {
+        playSound('shootshotgun');
+    }
+
+    flash = true;
+    $('#gun').css('background', 'rgba(0, 0, 0, 0) url("static/pistol-flash.png") no-repeat scroll left bottom');
+    $('#gun').css('left',"-=22");
+
+    setTimeout(function() {
+        flash = false;
+        $('#gun').css('background', 'rgba(0, 0, 0, 0) url("static/pisga0.png") no-repeat scroll left bottom');
+        $('#gun').css('left',"+=22");
+    }, 200);
+}
+
 $('.enemy').click(function() {
     if (!is_shoot) {
         is_shoot = true;
@@ -183,16 +207,22 @@ $('.enemy').click(function() {
             playSound('shootshotgun');
         }
 
-        $('#sound_death').attr("src", "static/sound/" + id_enemy + "_kill.wav");
-        $('#sound_death')[0].play();
+        if (sound_on) {
+            $('#sound_death').attr("src", "static/sound/" + id_enemy + "_kill.wav");
+            $('#sound_death')[0].play();
+        }
         console.log("PLAYIN'!");
         $('.enemy').css('background-image', "url('static/enemies/" + id_enemy + "_dead.png')");
-        $('#gun').css('bottom', -20);
+        flash = true;
+        $('#gun').css('background', 'rgba(0, 0, 0, 0) url("static/pistol-flash.png") no-repeat scroll left bottom');
+        $('#gun').css('left',"-=22");
 
         total_kills++;
 
         setTimeout(function() {
-            $('#gun').css('bottom', -10);
+            flash = false;
+            $('#gun').css('background', 'rgba(0, 0, 0, 0) url("static/pisga0.png") no-repeat scroll left bottom');
+            $('#gun').css('left',"+=22");
             $('.enemy').fadeOut('fast', function() {
 
                 setTimeout(function() {
@@ -366,9 +396,14 @@ $(function() {
 });
 
 document.addEventListener('mousemove', evt => {
+    console.log("mouse moved");
     let x = evt.clientX;
 
-    $('#gun').css('left', (x-34)+"px");
+    if (!flash) {
+        $('#gun').css('left', (x-34)+"px");
+    } else {
+        $('#gun').css('left', (x-56)+"px");
+    }
 });
 </script>
 

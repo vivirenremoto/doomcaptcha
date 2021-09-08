@@ -8,12 +8,26 @@
 
     <link rel="shortcut icon" href="favicon.ico"/>
 
-    <link rel="prefetch" href="static/gun.gif" />
+    <link rel="prefetch" href="static/pisga0.png" />
     <link rel="prefetch" href="static/shotgun.gif" />
-    <link rel="prefetch" href="static/mp3/music2.mp3" />
-    <link rel="prefetch" href="static/mp3/shoot.mp3" />
-    <link rel="prefetch" href="static/mp3/shootshotgun.mp3" />
-    <link rel="prefetch" href="static/mp3/ok.mp3" />
+    <link rel="prefetch" href="static/sound/music2.mp3" />
+    <link rel="prefetch" href="static/sound/dspistol.wav" />
+    <link rel="prefetch" href="static/sound/dsdshtgn.wav" />
+    <link rel="prefetch" href="static/sound/ok.mp3" />
+    
+    <link rel="prefetch" href="static/sound/1_kill.wav" />
+    <link rel="prefetch" href="static/sound/2_kill.wav" />
+    <link rel="prefetch" href="static/sound/3_kill.wav" />
+    <link rel="prefetch" href="static/sound/4_kill.wav" />
+    <link rel="prefetch" href="static/sound/5_kill.wav" />
+    <link rel="prefetch" href="static/sound/6_kill.wav" />
+
+    <link rel="prefetch" href="static/sound/1_kill.wav" />
+    <link rel="prefetch" href="static/sound/2_kill.wav" />
+    <link rel="prefetch" href="static/sound/3_kill.wav" />
+    <link rel="prefetch" href="static/sound/4_kill.wav" />
+    <link rel="prefetch" href="static/sound/5_kill.wav" />
+    <link rel="prefetch" href="static/sound/6_kill.wav" />
 
     <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
 </head>
@@ -51,7 +65,7 @@ body {
     background-repeat:no-repeat;
     width: 100%;
     height: 100%;
-    cursor: url(static/cursor2.png), default !important;
+    cursor: url(static/cursor2.png) 16 16, default !important;
 }
 
 button{background:none;border:1px #fff solid;color:#fff;cursor:pointer;margin-top:17px;}
@@ -65,7 +79,7 @@ button{background:none;border:1px #fff solid;color:#fff;cursor:pointer;margin-to
 }
 
 .enemy{
-    cursor: url(static/cursor3.png) , default!important;
+    cursor: url(static/cursor3.png) 16 16, default!important;
     top:50%;
     margin-top:-57px;
     background-repeat:no-repeat;
@@ -100,10 +114,10 @@ button{background:none;border:1px #fff solid;color:#fff;cursor:pointer;margin-to
     </div>
 </div>
 
-<div id="game">
-    <div class="enemy" style="display:none;z-index:2;position:fixed;left:120px;"></div>
+<div id="game" style="position:fixed;height:100%;width:100%;left:0px;top:0px;" onclick="handleMiss(event, this);">
+    <div class="enemy" style="display:none;z-index:1;position:fixed;left:120px;"></div>
 
-    <div id="gun" style="z-index:1;background:url('static/gun.gif');background-position:center bottom;background-size:350px;background-repeat:no-repeat;width:100%;height:100px;position:fixed;left:0;bottom:-10px;"></div>
+    <div id="gun" style="pointer-events:none;z-index:2;background:url('static/pisga0.png');background-position:left bottom;background-repeat:no-repeat;width:100%;height:100px;position:fixed;left:0;bottom:-10px;"></div>
 
     <table id="countdown" cellpadding="0" cellspacing="0" border="0" style="display:none;z-index:2;position:fixed;left:0;bottom:0;width:100%;height:7px;"><td id="percent" bgcolor="red" width="100%"></td><td bgcolor="black"></td></table>
 </div>
@@ -118,19 +132,22 @@ button{background:none;border:1px #fff solid;color:#fff;cursor:pointer;margin-to
 </div>
 
 <audio id="sound_music" loop>
-    <source src="static/mp3/music2.mp3" type="audio/mp3">
+    <source src="static/sound/music2.mp3" type="audio/mp3">
 </audio>
 
 <audio id="sound_shoot">
-    <source src="static/mp3/shoot.mp3" type="audio/mp3">
+    <source src="static/sound/dspistol.wav" type="audio/wav">
 </audio>
 
 <audio id="sound_shootshotgun">
-    <source src="static/mp3/shootshotgun.mp3" type="audio/mp3">
+    <source src="static/sound/dsdshtgn.wav" type="audio/wav">
 </audio>
 
 <audio id="sound_ok">
-    <source src="static/mp3/ok.mp3" type="audio/mp3">
+    <source src="static/sound/ok.mp3" type="audio/mp3">
+</audio>
+
+<audio id="sound_death" src="" type="audio/wav">
 </audio>
 
 <input id="cheatcode" autocomplete="off" style="display:none;text-align:center;position:fixed;z-index:99;top:0;left:0;width:100%;font-size:20px;color:black;opacity:0;">
@@ -156,6 +173,10 @@ var timer_game;
 var idkfa = false;
 var id_enemy;
 var images_preload = [];
+var flash = false;
+
+document.getElementById("sound_death").volume = 0.5;
+document.getElementById("sound_shootshotgun").volume = 0.5;
 
 if (document.location.href.indexOf('enemies') > -1) {
     max_kills = parseInt(document.location.href.split('enemies=')[1].split('&')[0]);
@@ -168,23 +189,56 @@ if( max_kills < 1 ){
 time_seconds = max_kills * 2;
 current_time = time_seconds;
 
+function handleShootAnim() {
+    flash = true;
+    if (!idkfa) {
+        playSound('shoot');
+        $('#gun').css('background', 'rgba(0, 0, 0, 0) url("static/pistol-flash.png") no-repeat scroll left bottom');
+        $('#gun').css('left',"-=22");
+    } else {
+        playSound('shootshotgun');
+        $('#gun').css('background', 'rgba(0, 0, 0, 0) url("static/shotgun-flash.png") no-repeat scroll left bottom');
+        //$('#gun').css('left',"-=33");
+        $('#gun').css('bottom',"0px");
+    }
+    setTimeout(function() {
+        flash = false;
+        if (!idkfa) {
+            $('#gun').css('background', 'rgba(0, 0, 0, 0) url("static/pisga0.png") no-repeat scroll left bottom');
+            $('#gun').css('left',"+=22");
+        } else {
+            $('#gun').css('background', 'rgba(0, 0, 0, 0) url("static/sht2a0.png") no-repeat scroll left bottom');
+            //$('#gun').css('left',"+=33");
+            $('#gun').css('bottom',"-10px");
+        }
+    }, 200);
+}
+
+function handleMiss(event, element){
+    if (event.target != element) {
+        event.stopPropagation();
+        return;
+    }
+
+    handleShootAnim();
+}
+
 $('.enemy').click(function() {
     if (!is_shoot) {
         is_shoot = true;
 
-        if (!idkfa) {
-            playSound('shoot');
-        } else {
-            playSound('shootshotgun');
-        }
+        handleShootAnim();
 
+        if (sound_on) {
+            $('#sound_death').attr("src", "static/sound/" + id_enemy + "_kill.wav");
+            $('#sound_death')[0].play();
+        }
         $('.enemy').css('background-image', "url('static/enemies/" + id_enemy + "_dead.png')");
-        $('#gun').css('bottom', -20);
+        
 
         total_kills++;
 
         setTimeout(function() {
-            $('#gun').css('bottom', -10);
             $('.enemy').fadeOut('fast', function() {
 
                 setTimeout(function() {
@@ -243,9 +297,7 @@ function postSize(height) {
 }
 
 function startGame() {
-    if (screen.width > 1500) {
-        $('#cheatcode').show().val('').focus();
-    }
+    $('#cheatcode').show().val('').focus();
 
     showEnemy();
     setRandomBackground();
@@ -321,7 +373,7 @@ $('#cheatcode').keyup(function() {
     }
     if ($(this).css('opacity', 1).val().toUpperCase() == 'IDKFA') {
         idkfa = true;
-        document.getElementById("gun").style.backgroundImage='url("static/shotgun.gif"';
+        document.getElementById("gun").style.backgroundImage='url("static/sht2a0.png"';
         $('#cheatcode').val('').hide();
     }
 });
@@ -355,6 +407,20 @@ $(function() {
     }
 
 
+});
+
+document.addEventListener('mousemove', evt => {
+    let x = evt.clientX;
+
+    if (!idkfa) {
+        if (!flash) {
+            $('#gun').css('left', (x-34)+"px");
+        } else {
+            $('#gun').css('left', (x-56)+"px");
+        }
+    } else {
+        $('#gun').css('left', (x-33)+"px");
+    }
 });
 </script>
 
